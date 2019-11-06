@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+ <!--<link href="assets/css/bootstrap.min.css" rel="stylesheet" />-->
+        <!--<link rel="stylesheet" href="css/style.css"/>       -->
+        <!--<link rel="stylesheet" href="assets/css/ace.min.css" />-->
+        <!--<link rel="stylesheet" href="assets/css/font-awesome.min.css" />-->
+        <!--<link href="Widget/icheck/icheck.css" rel="stylesheet" type="text/css" />-->
+		<!--&lt;!&ndash;[if IE 7]>-->
+		  <!--<link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />-->
+		<!--<![endif]&ndash;&gt;-->
+        <!--&lt;!&ndash;[if lte IE 8]>-->
+		  <!--<link rel="stylesheet" href="assets/css/ace-ie.min.css" />-->
+		<!--<![endif]&ndash;&gt;-->
+	    <script src="${request.contextPath }/js/jquery-1.9.1.min.js"></script>
+        <!--<script src="assets/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="${request.contextPath }/layui/css/layui.css"  media="all">
+    <script src="${request.contextPath }/layui/layui.js" charset="utf-8"></script>
+    <script src="${request.contextPath }/js/picture/advertisingType.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/uploadUtil.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/common.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/serviceUtil.js" type="text/javascript" ></script>
+<title class="lang" >添加廣告類型</title>
+</head>
+<body>
+<input type="hidden" id="contextPath" value="${request.contextPath }">
+<form class="layui-form" action="" lay-filter="initAdvertisingType">
+    <input type="hidden" id="advertisingTypeId" name="advertisingTypeId" value="${advertisingTypeId!}">
+    <div class="layui-form-item">
+        <label class="layui-form-label lang">分類名称</label>
+        <div class="layui-input-block" style="margin-left: 150px;">
+            <input type="text" name="advertisingTypeName" id="advertisingTypeName" lay-verify="title|required" autocomplete="off" placeholder="請輸入名稱" class="layui-input" style = "width:190px;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" >圖片數量</label>
+        <div class="layui-input-block" style="margin-left: 150px;">
+            <input type="number" name="advertisingTypeNumber" id="advertisingTypeNumber" lay-verify="title|number|required" autocomplete="off"   class="layui-input" style = "width:190px;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" >比列大小</label>
+        <div class="layui-input-inline" style="margin-left: 20px;">
+            <input type="number" name="advertisingTypeImgRatio" id="advertisingTypeImgRatio" lay-verify="title|number|required" autocomplete="off"   class="layui-input" style = "width:190px;">
+        </div>
+        <div class="layui-form-mid layui-word-aux">高度/寬度</div>
+        <!--<div class="layui-form-mid layui-word-aux"><button>計算</button></div>-->
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label lang"  >分類描述</label>
+        <div class="layui-input-block" style="margin-left: 150px;">
+            <textarea placeholder="请输入描述" name="advertisingTypeDescribe" id="advertisingTypeDescribe" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block" style="margin-left: 150px;">
+            <button class="layui-btn lang" lay-submit id="submitAdvertisingType" lay-filter="submitAdvertisingType" key="submit">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary lang" key="reset">重置</button>
+        </div>
+    </div>
+</form>
+</div>
+<!--<script type="text/javascript" src="${request.contextPath }/Widget/icheck/jquery.icheck.min.js"></script>-->
+<!--<script type="text/javascript" src="${request.contextPath }/Widget/Validform/5.3.2/Validform.min.js"></script>-->
+<!--<script type="text/javascript" src="${request.contextPath }/assets/layer/layer.js"></script>-->
+<!--<script type="text/javascript" src="${request.contextPath }/js/H-ui.js"></script>-->
+<!--<script type="text/javascript" src="${request.contextPath }/js/H-ui.admin.js"></script>-->
+<script type="text/javascript">
+$(function(){
+    AdvertisingType.initAddAdvertisingType();
+});
+</script>
+</body>
+</html>

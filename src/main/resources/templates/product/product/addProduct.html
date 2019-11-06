@@ -1,0 +1,717 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="renderer" content="webkit|ie-comp|ie-stand">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+	<script src="${request.contextPath }/js/jquery-3.3.1.min.js"></script>
+	<link rel="stylesheet" href="${request.contextPath }/css/style.css"/>
+    <script src="${request.contextPath }/js/lrtk.js" type="text/javascript" ></script>
+	<link rel="stylesheet" href="${request.contextPath }/Widget/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<link rel="stylesheet" href="${request.contextPath }/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="${request.contextPath }/bootstrap/css/bootstrap.min.css"  media="all">
+    <link href="${request.contextPath }/bootstrap/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="${request.contextPath }/layui/css/formSelects-v4.css"  media="all">
+    <link rel="stylesheet" href="${request.contextPath }/cropper/cropper.min.css"  media="all">
+    <link rel="stylesheet" href="${request.contextPath }/cropper/ImgCropping.css"  media="all">
+    <link href="${request.contextPath }/layui/Content/Layui-KnifeZ/css/layui.css" rel="stylesheet" />
+    <script src="${request.contextPath }/layui/Content/ace/ace.js"></script>
+	<script src="${request.contextPath }/layui/layui.js" charset="utf-8"></script>
+    <script src="${request.contextPath }/layui/tableSelect.js" charset="utf-8"></script>
+	<script type="text/javascript" src="${request.contextPath }/Widget/zTree/js/jquery.ztree.all-3.5.min.js"></script>
+    <script src="${request.contextPath }/js/util/common.js" type="text/javascript" ></script>
+	<script src="${request.contextPath }/js/product/product.js" type="text/javascript" ></script>
+	<script src="${request.contextPath }/js/util/serviceUtil.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/ztreeUtil.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/bootstrap/fileinput.min.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/bootstrap/locales/zh.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/upload.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/uploadUtil.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/cropper/cropper.min.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/cropperUtil.js" type="text/javascript" ></script>
+
+	<title>新增图片</title>
+</head>
+<style>
+    .layui-form-label {
+        float: left;
+        display: block;
+        padding: 9px 15px;
+        width: 110px;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: right;
+    }
+    .layui-table-cell {
+        height: auto;
+        line-height: 28px;
+        position: relative;
+        box-sizing: border-box;
+        padding: 0px 15px;
+    }
+    .layui-input-block {
+        margin-left: 130px;
+        min-height: 36px;
+    }
+    .layui-form-label {
+        float: left;
+        display: block;
+        padding: 9px 15px;
+        width: 130px;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: right;
+    }
+</style>
+<body>
+
+<input type="hidden" id="contextPath" value="${request.contextPath }">
+<div class="clearfix" id="add_picture">
+	<div id="scrollsidebar" class="left_Treeview">
+		<div class="show_btn" id="rightArrow"><span></span></div>
+		<div class="widget-box side_content" >
+			<div class="side_title"><a title="隐藏" class="close_btn"><span></span></a></div>
+			<div class="side_list">
+				<div class="widget-header header-color-green2">
+					<h4 class="lighter smaller lang" key="choosing_product_types" style="color: white;padding-top: 5px;">选择产品类型</h4>
+				</div>
+				<div class="widget-body">
+					<div class="widget-main padding-8">
+						<div  id="treeDemo" class="ztree"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="page_right_style">
+		<div class="type_title"><span class="lang" key="add_product">添加商品</span><span style="float: right;margin-right: 10px;font-size: small;color: blue;" id="productType"></span><span style="float: right;font-size: small;">类型：</span></div>
+        <form class="layui-form" action=""  lay-filter="initProduct">
+            <input type="hidden" id="productId" name="productId" value="${productId!}">
+            <input type="hidden" id="copyProductId" name="copyProductId" value="${copyProductId!}">
+            <div class="layui-tab layui-tab-brief" lay-filter="demo">
+                <ul class="layui-tab-title">
+                    <li class="layui-this lang" key="essential_information"></li>
+                    <li class="lang" key="detailed_information"></li>
+                    <li class="lang" key="picture_information"></li>
+                    <li class="lang" key="video_information"></li>
+                    <li class="lang" key="product_catalog"></li>
+                    <li class="lang" key="product_specification"></li>
+                </ul>
+                <div class="layui-tab-content">
+                    <!--*************** 华丽的分割线 ***************-->
+                    <!--基本信息-->
+                    <input type="hidden" id="productTypeId" name="productTypeId">
+                        <div class="layui-tab-item layui-show">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label lang" key="title_chinese"></label>
+                                <div class="layui-input-block">
+<!--                                    <input type="text" name="productTitle" lay-verify="title|required" autocomplete="off"  class="layui-input">-->
+                                    <textarea name="productTitle" placeholder="请输入内容" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label lang" key="title_english"></label>
+                                <div class="layui-input-block">
+<!--                                    <input type="text" name="productTitleEng" lay-verify="title" autocomplete="off"  class="layui-input">-->
+                                    <textarea name="productTitleEng" placeholder="请输入内容" class="layui-textarea layui-input"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label lang" key="delivery_area">发货地区</label>
+                                <div class="layui-input-block">
+                                    <select name="productDeliveryArea"  xm-select="productDeliveryArea" xm-select-search="" xm-select-search-type="dl">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label lang" key="unit">產品單位</label>
+                                <div class="layui-input-block">
+                                    <select name="productUnit" lay-verify="required" xm-select="productUnit" xm-select-search="" xm-select-radio="">
+                                        <option vlue="color">颜色</option>
+                                        <option vlue="color">型号</option>
+                                    </select>
+                                </div>
+                                <!--<div class="layui-input-inline">-->
+                                <!--<select name="productUnit" lay-verify="required" lay-search="">-->
+                                <!--<option value="" class="lang" key="unit_tips">选择單位</option>-->
+                                <!--<option value="piece" class="lang" key="piece">件</option>-->
+                                <!--<option value="kilogram" class="lang" key="kilogram">千克</option>-->
+                                <!--<option value="ton" class="lang" key="ton">吨</option>-->
+                                <!--<option value="set" class="lang" key="set">套</option>-->
+                                <!--<option value="box" class="lang" key="box">箱</option>-->
+                                <!--</select>-->
+                                <!--</div>-->
+                            </div>
+                            <!--<div class="layui-form-item">-->
+                                <!--<label class="layui-form-label lang" key="receiving_area">收货地区</label>-->
+                                <!--<div class="layui-input-block">-->
+                                    <!--<select name="productReceivingArea"  xm-select="productReceivingArea" xm-select-search="" xm-select-search-type="dl">-->
+                                        <!--<option value="香港">香港</option>-->
+                                        <!--<option value="澳门">澳门</option>-->
+                                        <!--<option value="北京">北京</option>-->
+                                        <!--<option value="上海">上海</option>-->
+                                        <!--<option value="天津">天津</option>-->
+                                        <!--<option value="重庆">重庆</option>-->
+                                        <!--<option value="黑龙江">黑龙江</option>-->
+                                        <!--<option value="吉林">吉林</option>-->
+                                        <!--<option value="辽宁">辽宁</option>-->
+                                        <!--<option value="山东">山东</option>-->
+                                        <!--<option value="安徽">安徽</option>-->
+                                        <!--<option value="江苏">江苏</option>-->
+                                        <!--<option value="河北">河北</option>-->
+                                        <!--<option value="湖北">湖北</option>-->
+                                        <!--<option value="湖南">湖南</option>-->
+                                        <!--<option value="江西">江西</option>-->
+                                        <!--<option value="陕西">陕西</option>-->
+                                        <!--<option value="山西">山西</option>-->
+                                        <!--<option value="四川">四川</option>-->
+                                        <!--<option value="海南">海南</option>-->
+                                        <!--<option value="广东">广东</option>-->
+                                        <!--<option value="贵州">贵州</option>-->
+                                        <!--<option value="浙江">浙江</option>-->
+                                        <!--<option value="福建">福建</option>-->
+                                        <!--<option value="台湾">台湾</option>-->
+                                        <!--<option value="甘肃">甘肃</option>-->
+                                        <!--<option value="云南">云南</option>-->
+                                        <!--<option value="内蒙古">内蒙古</option>-->
+                                        <!--<option value="宁夏">宁夏</option>-->
+                                        <!--<option value="新疆">新疆</option>-->
+                                        <!--<option value="广西">广西</option>-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <div class="layui-form-item">
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label lang" key="material_chinese">材質(中文)</label>
+                                    <div class="layui-input-inline">
+                                        <input type="tel" name="productMaterial" lay-verify="title" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label lang" key="material_english">材質(英文)</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="productMaterialEng" lay-verify="title" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label lang" >預計送達天數</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="productServiceDate"   lay-verify="number" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux">天</div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label lang" key="brand_choice">品牌選擇</label>
+                                    <div class="layui-input-inline">
+                                        <select name="brandId" id="brandId" lay-verify="required" lay-search="">
+                                            <option value="" class="lang" key="brand_choice_tips">选择或搜索品牌</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--<div class="layui-inline">-->
+                                    <!--<label class="layui-form-label lang" key="unit">產品單位</label>-->
+                                    <!--<div class="layui-input-block"  style="margin-left: 130px;">-->
+                                        <!--<select name="productUnit" lay-verify="required" xm-select="productUnit" xm-select-radio="">-->
+                                            <!--<option vlue="color">颜色</option>-->
+                                            <!--<option vlue="color">型号</option>-->
+                                        <!--</select>-->
+                                    <!--</div>-->
+                                    <!--&lt;!&ndash;<div class="layui-input-inline">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<select name="productUnit" lay-verify="required" lay-search="">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<option value="" class="lang" key="unit_tips">选择單位</option>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<option value="piece" class="lang" key="piece">件</option>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<option value="kilogram" class="lang" key="kilogram">千克</option>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<option value="ton" class="lang" key="ton">吨</option>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<option value="set" class="lang" key="set">套</option>&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<option value="box" class="lang" key="box">箱</option>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--</div>-->
+                                <div class="layui-inline">
+                                    <label class="layui-form-label lang" key="min_order_number">最低訂購數</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="productMinNumber"  lay-verify="number" min="1" autocomplete="off" class="layui-input" value="1">
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label lang" key="home_price">首頁價格</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="productDisPriceStart"   lay-verify="number" autocomplete="off" class="layui-input">
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux">HDK$</div>
+                                </div>
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label lang" key="free_shipping">是否包郵</label>
+                                    <div class="layui-input-inline">
+                                        <input type="checkbox" name="productIsFreight" lay-skin="switch" lay-filter="productIsFreight" value="1" lay-text="否|是">
+                                    </div>
+                                </div>
+
+
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">上架狀態</label>
+                                    <div class="layui-input-inline">
+                                        <input type="checkbox" checked="" name="productState" lay-skin="switch" lay-filter="productState" value=true lay-text="下架|上架">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="layui-form-item">-->
+                                <!--&lt;!&ndash;<div class="layui-inline">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<label class="layui-form-label lang" key="original_price">價格範圍</label>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="layui-input-inline" style="width: 100px;">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<input type="text" name="productPriceStart" placeholder="￥" lay-verify="number" autocomplete="off" class="layui-input">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="layui-form-mid">-</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="layui-input-inline" style="width: 100px;">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<input type="text" name="productPriceEnd" placeholder="￥" lay-verify="number" autocomplete="off" class="layui-input">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--<div class="layui-inline">-->
+
+                                    <!--&lt;!&ndash;<label class="layui-form-label lang" key="discount_price">折后範圍</label>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="layui-input-inline" style="width: 100px;">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<input type="text" name="productDisPriceStart" placeholder="￥"  lay-verify="number" autocomplete="off" class="layui-input">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="layui-form-mid">-</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="layui-input-inline" style="width: 100px;">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<input type="text" name="productDisPriceEnd" placeholder="￥" lay-verify="number" autocomplete="off" class="layui-input">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="layui-inline">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<label class="layui-form-label">是否打折</label>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<div class="layui-input-inline">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<input type="checkbox" checked="" name="productConfigIsDiscount" lay-skin="switch" lay-filter="switchTest" lay-text="否|是">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<div class="layui-inline">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<label class="layui-form-label lang" key="free_shipping">是否包郵</label>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<div class="layui-input-inline">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<input type="checkbox" name="productIsFreight" lay-skin="switch" lay-filter="productIsFreight" value="1" lay-text="否|是">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+
+                                    <!--&lt;!&ndash;<div class="layui-inline">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<label class="layui-form-label">上架狀態</label>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<div class="layui-input-inline">&ndash;&gt;-->
+                                            <!--&lt;!&ndash;<input type="checkbox" checked="" name="productState" lay-skin="switch" lay-filter="productState" value=true lay-text="下架|上架">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--</div>-->
+                            <!--</div>-->
+
+                            <div class="layui-form-item layui-form-text">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">促銷方式</label>
+                                    <div class="layui-input-block" id="discountType">
+                                        <input type="checkbox" name="like[double]" value="1" title="買一送一">
+                                        <input type="checkbox" name="like[Promotion]" value="2" title="超級促銷" >
+                                        <input type="checkbox" name="like[NoFreight]" value="3" title="免費送貨">
+                                        <input type="checkbox" name="like[Relief1]" value="4" title="滿額折百">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">特點(中文)</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容(中文)" name="productFeatures" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">特點(英文)</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容(英文)" name="productFeaturesEng" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">描述(中文)</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容(中文)" name="productDescribe" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">描述(英文)</label>
+                                <div class="layui-input-block">
+                                    <textarea placeholder="请输入内容(英文)" name="productDescribeEng" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">內容(中文)</label>
+                                <div class="layui-input-block">
+                                    <textarea id="productContent" name="productContent"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">內容(英文)</label>
+                                <div class="layui-input-block">
+                                    <textarea id="productContentEng" name="productContentEng"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    <!--*************** 华丽的分割线 ***************-->
+                    <!--詳細信息-->
+                        <div class="layui-tab-item">
+                            <!--<div class="layui-form-item">-->
+                                <!--<label class="layui-form-label">產品顏色</label>-->
+                                <!--<div class="layui-input-block">-->
+                                    <!--<select name="productColorIds"  xm-select="color" xm-select-search="" xm-select-search-type="dl">-->
+                                    <!--</select>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">產品尺寸</label>
+                                <div style="margin-left: 130px">
+                                    <table class="table table-striped table-bordered table-hover" id="productSizeList" lay-filter="productSizeList">
+                                    </table>
+
+                                    <script type="text/html" id="toolbarDemo">
+                                        <div class="layui-btn-container">
+                                            <span><a class="layui-btn layui-btn-sm" lay-event="addProductSize">新增尺寸</a></span>
+                                        </div>
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">其他選擇</label>
+                                <div style="margin-left: 130px">
+                                    <table class="table table-striped table-bordered table-hover" id="productSpecificationsList" lay-filter="productSpecificationsList">
+                                    </table>
+                                    <script type="text/html" id="toolbarDemo2">
+                                        <div class="layui-btn-container">
+                                            <span><a class="layui-btn layui-btn-sm" lay-event="addProductSpecifications">新增選擇</a></span>
+                                        </div>
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">配置列表</label>
+                                <div style="margin-left: 130px;">
+                                    <table class="table table-striped table-bordered table-hover" id="productConfigList" lay-filter="productConfigList">
+                                    </table>
+                                    <script type="text/html" id="toolbarDemo1">
+                                        <div class="layui-btn-container">
+                                            <span><a class="layui-btn layui-btn-sm" lay-event="addProductConfig">新增配置</a></span>
+                                            <span><a class="layui-btn layui-btn-sm" lay-event="autoProductConfig">自動配置</a></span>
+                                        </div>
+                                    </script>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-tab-item">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">圖片</label>
+                                <div class="layui-input-block">
+                                    <input type="file" name="files" id="detailsImg" multiple class="file-loading"  data-browse-on-zone-click="true"/>
+                                    <table class="table table-striped table-bordered table-hover" id="productImageList" lay-filter="productImageList">
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">影片</label>
+                            <div class="layui-input-block">
+                                <input type="file" name="files" id="productVideo" multiple class="file-loading"  data-browse-on-zone-click="true"/>
+                                <table class="table table-striped table-bordered table-hover" id="productVideoList" lay-filter="productVideoList">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">目录</label>
+                            <div class="layui-input-block">
+                                <input type="file" name="files" id="productContentsFile" multiple class="file-loading"  data-browse-on-zone-click="true"/>
+                                <table class="table table-striped table-bordered table-hover" id="productContentsFileList" lay-filter="productContentsFileList">
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">规格</label>
+                            <div class="layui-input-block">
+                                <input type="file" name="files" id="productSpecificationsFile" multiple class="file-loading"  data-browse-on-zone-click="true"/>
+                                <table class="table table-striped table-bordered table-hover" id="productSpecificationsFileList" lay-filter="productSpecificationsFileList">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="float: right">
+                        <button class="layui-btn" lay-submit="" lay-filter="addProductSubmit">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--新增尺寸-->
+        <script type="text/html" id="addProductSize">
+            <form class="layui-form" id="addEmployeeForm" style="padding-top: 15px">
+                <!--<div class="layui-form-item">-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">內容(中文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="productSizeContent" id="productSizeContent" lay-verify="title|required" autocomplete="off" placeholder="请输入內容（中文）" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">內容(英文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="productSizeContentEng" id="productSizeContentEng" lay-verify="title|required" autocomplete="off" placeholder="请输入選擇內容（中文）" class="layui-input">
+                    </div>
+                </div>
+                    <!--<div class="layui-inline">-->
+                        <!--<label class="layui-form-label">长</label>-->
+                        <!--<div class="layui-input-inline">-->
+                            <!--<input type="tel" name="productSizeLong" lay-verify="title" autocomplete="off" class="layui-input">-->
+                        <!--</div>-->
+                        <!--<div class="layui-form-mid layui-word-aux" style="float: right">mm</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-inline">-->
+                        <!--<label class="layui-form-label">宽</label>-->
+                        <!--<div class="layui-input-inline">-->
+                            <!--<input type="text" name="productSizeWidth" lay-verify="title" autocomplete="off" class="layui-input">-->
+                        <!--</div>-->
+                        <!--<div class="layui-form-mid layui-word-aux" style="float: right">mm</div>-->
+                    <!--</div>-->
+                <!--<div class="layui-inline">-->
+                    <!--<label class="layui-form-label">高</label>-->
+                    <!--<div class="layui-input-inline">-->
+                        <!--<input type="text" name="productSizeHeight" lay-verify="title" autocomplete="off" class="layui-input">-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-mid layui-word-aux" style="float: right">mm</div>-->
+                <!--</div>-->
+                <!--<div class="layui-inline">-->
+                    <!--<label class="layui-form-label">體積</label>-->
+                    <!--<div class="layui-input-inline">-->
+                        <!--<input type="number" name="productSizeVolume" lay-verify="number"  min="0.001" max="100" step="0.01"  autocomplete="off" class="layui-input" value="0.001">-->
+                    <!--</div>-->
+                    <!--<div class="layui-form-mid layui-word-aux" style="float: right">m3</div>-->
+                <!--</div>-->
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="float: left">
+                        <button  id="addProductSizeSubmit" class="layui-btn" lay-submit="" lay-filter="addProductSizeSubmit">提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </script>
+        <!--選擇-->
+        <script type="text/html" id="addProductSpecifications">
+            <form class="layui-form"  style="padding-top: 15px">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">內容(中文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="productSpecificationsContent" id="productSpecificationsContent" lay-verify="title|required" autocomplete="off" placeholder="请输入內容（中文）" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">內容(英文)</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="productSpecificationsContentEng" id="productSpecificationsContentEng" lay-verify="title|required" autocomplete="off" placeholder="请输入選擇內容（中文）" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">類型</label>
+                    <div class="layui-input-block" id="productSpecificationsType" style="margin-left: 130px;">
+                        <select name="productSpecificationsType" lay-verify="required" xm-select="productSpecificationsType" xm-select-radio="">
+                            <option vlue="color">颜色</option>
+                            <option vlue="color">型号</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="float: right">
+                        <button  id="addProductSpecificationsSubmit" class="layui-btn" lay-submit="" lay-filter="addProductSpecificationsSubmit">提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </script>
+        <!--新增配置-->
+        <script type="text/html" id="addProductConfig">
+            <form class="layui-form" id="addProductConfigFrom" style="padding-top: 15px">
+                <input name="productId" type="hidden">
+                <!--<div class="layui-form-item">-->
+                    <!--<label class="layui-form-label">顏色</label>-->
+                    <!--<div class="layui-input-block">-->
+                        <!--<select name="color" xm-select="addProductConfigColorSelect" xm-select-create="請先選擇產品顏色" xm-select-radio="">-->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">圖片</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="productConfigUrl" id="productImage" lay-verify="title" autocomplete="off"  class="layui-input">
+                    </div>
+
+
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">尺寸</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="productSize" id="productSize" lay-verify="title|required" autocomplete="off" placeholder="请選擇尺寸" class="layui-input">
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <!--<div class="layui-inline">-->
+                        <!--<label class="layui-form-label">原價</label>-->
+                        <!--<div class="layui-input-inline">-->
+                            <!--<input type="number" name="productConfigPrice" lay-verify="title|number" autocomplete="off" class="layui-input" min="1" max="1000000" >-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="layui-inline">-->
+                        <!--<label class="layui-form-label">折扣價</label>-->
+                        <!--<div class="layui-input-inline">-->
+                            <!--<input type="number" name="productConfigDiscountPrice" lay-verify="title|number" autocomplete="off" class="layui-input" min="1" max="1000000" >-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="layui-inline">
+                        <label class="layui-form-label">價格</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="productConfigDiscountPrice" lay-verify="title|number" autocomplete="off" class="layui-input" min="1" max="1000000" >
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">HDK$</div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">重量(kg)</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="productConfigWeight" lay-verify="title|number" autocomplete="off" class="layui-input"  min="0" max="9999" >
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">庫存</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="productConfigStock" lay-verify="title|number" autocomplete="off" class="layui-input" value="99" min="0" max="9999" >
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="float: right">
+                        <button  id="addProductConfigSubmit" class="layui-btn" lay-submit="" lay-filter="addProductConfigSubmit">提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </script>
+	</div>
+	<script type="text/html" id="addProductUnit">
+		<div class="layui-form-item">
+			<label class="layui-form-label">名稱(中文)</label>
+			<div class="layui-input-inline" style="margin-left: 40px;">
+				<input type="text" id="productUnitName" name="productUnitName" lay-verify="text|required"  autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">名稱(英文)</label>
+			<div class="layui-input-inline" style="margin-left: 40px;">
+				<input type="text" id="productUnitNameEng" name="productUnitNameEng" lay-verify="text|required"  autocomplete="off" class="layui-input">
+			</div>
+		</div>
+	</script>
+    <script type="text/html" id="addProductSpecificationsName">
+        <div class="layui-form-item">
+            <label class="layui-form-label">名稱(中文)</label>
+            <div class="layui-input-inline" style="margin-left: 40px;">
+                <input type="text" id="productSpecificationsName" name="colorName" lay-verify="text|required" placeholder="请输入名稱(中文)" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名稱(英文)</label>
+            <div class="layui-input-inline" style="margin-left: 40px;">
+                <input type="text" id="productSpecificationsNameEng" name="colorNameEng" lay-verify="text" placeholder="请输入名稱(英文)" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </script>
+
+
+</div>
+<!--图片裁剪框 start-->
+<div style="display: none" class="tailoring-container">
+    <div class="black-cloth closeTailor"></div>
+    <div class="tailoring-content">
+        <div class="tailoring-content-one">
+
+            <div class="close-tailoring closeTailor">×</div>
+        </div>
+
+        <div class="tailoring-content-two">
+            <div class="tailoring-box-parcel">
+                <img id="tailoringImg" src="${request.contextPath }/image/20_1_8b181846-f72d-4c16-9341-0fc9b642a101.jpg">
+            </div>
+            <div class="preview-box-parcel">
+                <p>图片预览：</p>
+                <div class="square previewImg"></div>
+                <div class="circular previewImg"></div>
+            </div>
+        </div>
+
+        <div class="tailoring-content-three">
+            <button class="l-btn cropper-reset-btn">复位</button>
+            <button class="l-btn cropper-rotate-btn">旋转</button>
+            <button class="l-btn cropper-scaleX-btn">换向</button>
+            <button class="l-btn sureCut" id="sureCut" onclick="sureCut(Product.shearCallBack)">确定</button>
+        </div>
+    </div>
+</div>
+<!--图片裁剪框 end-->
+<script>
+    $(function() {
+        $("#add_picture").fix({
+            float : 'left',
+            skin : 'green',
+            durationTime :false,
+            stylewidth:'220',
+            spacingw:0,
+            spacingh:260,
+            layuiTableResize:Product.resizeAddProudctTable
+        });
+    });
+    $( document).ready(function(){
+    //初始化宽度、高度
+
+    });
+
+</script>
+<script type="text/javascript">
+    $(".widget-box").height($(window).height()-20);
+    $(".page_right_style").width($(window).width()-220);
+    //当文档窗口发生改变时 触发
+    $(window).resize(function(){
+
+        $(".widget-box").height($(window).height()-20);
+        $(".page_right_style").height($(window).height());
+        $(".page_right_style").width($(window).width()-220);
+    });
+    $(document).ready(function(){
+        // uploadUtil.fileUpload("reportFile");
+        // uploadUtil.fileUpload("coverImg",Product.coverimgcallback,Product.coverimgdelcallback);
+
+        Product.initAddProduct();
+
+        // $(".widget-box").height($(window).height());
+        // $(".page_right_style").height($(window).height());
+        // $(".page_right_style").width($(window).width()-220);
+        // Product.resizeAddProudctTable();
+    })
+</script>
+</body>
+</html>

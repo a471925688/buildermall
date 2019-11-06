@@ -1,0 +1,117 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+ <!--<link href="assets/css/bootstrap.min.css" rel="stylesheet" />-->
+        <!--<link rel="stylesheet" href="css/style.css"/>       -->
+        <!--<link rel="stylesheet" href="assets/css/ace.min.css" />-->
+        <!--<link rel="stylesheet" href="assets/css/font-awesome.min.css" />-->
+        <!--<link href="Widget/icheck/icheck.css" rel="stylesheet" type="text/css" />-->
+		<!--&lt;!&ndash;[if IE 7]>-->
+		  <!--<link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />-->
+		<!--<![endif]&ndash;&gt;-->
+        <!--&lt;!&ndash;[if lte IE 8]>-->
+		  <!--<link rel="stylesheet" href="assets/css/ace-ie.min.css" />-->
+		<!--<![endif]&ndash;&gt;-->
+	    <script src="${request.contextPath }/js/jquery-1.9.1.min.js"></script>
+        <!--<script src="assets/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="${request.contextPath }/layui/css/layui.css"  media="all">
+    <script src="${request.contextPath }/layui/layui.js" charset="utf-8"></script>
+    <script src="${request.contextPath }/js/product/productType.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/uploadUtil.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/common.js" type="text/javascript" ></script>
+<title>添加产品类型</title>
+</head>
+<body>
+<input type="hidden" id="contextPath" value="${request.contextPath }">
+<form class="layui-form" action="" lay-filter="initProductType">
+    <input type="hidden" id="productTypeId" name="productTypeId" value="${productTypeId!}">
+    <input type="hidden" id="productTypeParentId" name="productTypeParentId" value="${productTypeParentId!}">
+    <input type="hidden" id="productTypeLevel" name="productTypeLevel" value="1">
+    <input type="hidden" id="productTypeIsParent" name="productTypeIsParent" value="0">
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span class="lang" key="name_Chinese"></span><i style="float: right;color: red;font-size: 26px;">*</i></label>
+        <div class="layui-input-block" style="margin-left: 150px;">
+            <input type="text" name="productTypeName" id="productTypeName" lay-verify="title|required" autocomplete="off"  class="layui-input" style = "width:190px;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span class="lang" key="name_English"></span><i style="float: right;color: red;font-size: 26px;">*</i></label>
+        <div class="layui-input-block" style="margin-left: 150px;">
+            <input type="text" name="productTypeNameEng" id="productTypeNameEng" lay-verify="title|required" autocomplete="off"  class="layui-input" style = "width:190px;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" key="sort">排序<i style="float: right;color: red;font-size: 26px;">*</i></label>
+        <div class="layui-input-block" style="margin-left: 150px;">
+            <input type="text" name="productTypeOrder" id="productTypeOrder" lay-verify="title|required" autocomplete="off"   class="layui-input" style = "width:190px;">
+        </div>
+
+    </div>
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">图标样式</label>-->
+        <!--<div class="layui-input-block" style="margin-left: 150px;">-->
+            <!--<input type="text" name="productTypeIconName" id="productTypeIconName" lay-verify="title" autocomplete="off"   class="layui-input" style = "width:190px;">-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="layui-form-item" style="margin-left: 38px;  margin-top: 20px;">-->
+        <!--<button type="button" class="layui-btn layui-btn-sm"  onclick="uploadic.click()">上传图标</button>-->
+    <!--</div>-->
+    <!--<div class="layui-upload-list" style="margin-left: 150px;margin-top:-50px;">-->
+        <!--<div class="layui-upload-drag" id="uploadic" style="height: 180px;width: 230px;">-->
+            <!--<label id="detailsimgdescribe">-->
+            <!--</label>-->
+        <!--</div>-->
+        <!--<input type="hidden" name="imagePath" id="imagePath" >-->
+    <!--</div>-->
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label lang" key="description_Chinese">类型描述</label>
+        <div class="layui-input-block" style="margin-left: 150px;">
+            <textarea  name="productTypeDescribe" id="productTypeDescribe" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label lang" key="description_English">类型描述</label>
+        <div class="layui-input-block" style="margin-left: 150px;">
+            <textarea  name="productTypeDescribeEng" id="productTypeDescribeEng" class="layui-textarea"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block" style="margin-left: 150px;">
+            <button class="layui-btn lang" key="submit" lay-submit id="submitProduct" lay-filter="submitProductType">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary lang" key="reset">重置</button>
+        </div>
+    </div>
+</form>
+</div>
+<!--<script type="text/javascript" src="${request.contextPath }/Widget/icheck/jquery.icheck.min.js"></script>-->
+<!--<script type="text/javascript" src="${request.contextPath }/Widget/Validform/5.3.2/Validform.min.js"></script>-->
+<!--<script type="text/javascript" src="${request.contextPath }/assets/layer/layer.js"></script>-->
+<!--<script type="text/javascript" src="${request.contextPath }/js/H-ui.js"></script>-->
+<!--<script type="text/javascript" src="${request.contextPath }/js/H-ui.admin.js"></script>-->
+<script type="text/javascript">
+$(function(){
+	// $('.skin-minimal input').iCheck({
+	// 	checkboxClass: 'icheckbox-blue',
+	// 	radioClass: 'iradio-blue',
+	// 	increaseArea: '20%'
+	// });
+	//
+	// $("#addProduct").Validform({
+	// 	tiptype:2,
+	// 	callback:function(form){
+	// 		form[0].submit();
+	// 		var index = parent.layer.getFrameIndex(window.name);
+	// 		parent.$('.btn-refresh').click();
+	// 		parent.layer.close(index);
+	// 	}
+	// });
+    ProductType.initAddProductType();
+});
+</script>
+</body>
+</html>

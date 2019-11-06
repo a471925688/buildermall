@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    name: test
+    url: jdbc:mysql://localhost:3306/newbuildermall?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+    username: bmdbuser
+    password: bmdbuser
+    driver-class-name: com.mysql.cj.jdbc.Driver
+host_name: http://localhost:8081/admin/
+web_host_name: http://localhost:8080/web/
+#文件上傳下載
+file:
+  directory:
+    temporary: C:/buildermallresources/temporary/product_Image/ #临时文件存放目录
+    image: C:/buildermallresources/product_Image/ #图片存放目录
+    video: C:/buildermallresources/product_Video/ #影片存放目录
+    contents: C:/buildermallresources/product_contents/ #产品目录存放目录
+    specifications: C:/buildermallresources/product_Specifications/ #产品规格存放目录
+    evaluation: C:/buildermallresources/product_evaluation/ #产品评价存放目录
+    pdf: C:/buildermallresources/product_Pdf/       #pdf存放目录
+    uploadPathLayedit: C:/buildermallresources/layedit/       #產品編輯器資源存放目录
+

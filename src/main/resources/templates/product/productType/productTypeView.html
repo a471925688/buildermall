@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="${request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="${request.contextPath}/css/style.css"/>
+        <link rel="stylesheet" href="${request.contextPath}/assets/css/ace.min.css" />
+        <link rel="stylesheet" href="${request.contextPath}/Widget/zTree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+        <script src="${request.contextPath}/js/jquery-1.9.1.min.js"></script>
+        <script src="${request.contextPath}/assets/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="${request.contextPath}/Widget/zTree/js/jquery.ztree.all-3.5.min.js"></script>
+        <script src="${request.contextPath }/assets/layer/layer.js" type="text/javascript"></script>
+        <script src="${request.contextPath}/js/util/ztreeUtil.js" type="text/javascript" ></script>
+        <script src="${request.contextPath}/js/lrtk.js" type="text/javascript" ></script>
+        <script src="${request.contextPath}/js/product/productType.js" type="text/javascript" ></script>
+        <script src="${request.contextPath}/js/util/serviceUtil.js" type="text/javascript" ></script>
+    <script src="${request.contextPath}/js/util/common.js" type="text/javascript" ></script>
+<title>产品类型管理</title>
+</head>
+<style type="text/css">
+    .layui-table-cell {
+        height: auto;
+    }
+    .layui-table-view .layui-table {
+        position: relative;
+        width: 100%;
+        margin: 0;
+    }
+</style>
+<body>
+<input type="hidden" id="contextPath" value="${request.contextPath }">
+<div class=" clearfix">
+    <input type="hidden" id="productTypeId"  value="0"/>
+    <input type="hidden" id="productTypeParentId" value="0"/>
+    <div class="border clearfix">
+       <span class="l_f">
+        <a href="#" onclick="ProductType.addProductTypeView(1)" id="addParentProduct" class="btn btn-warning" ><i class="fa fa-plus"></i> <span class="lang" key="add_productType">添加产品类型</span></a>
+        <a href="#" onclick="ProductType.addProductTypeView(0)" id="addProduct" class="btn btn-warning" ><i class="fa fa-plus"></i> <span class="lang" key="adding_subproduct_types">添加产品类型</span></a>
+       </span>
+        <span class="r_f" id="countType">共：<b>5</b>类</span>
+    </div>
+ <div id="category">
+    <div id="scrollsidebar" class="left_Treeview">
+    <div class="show_btn" id="rightArrow"><span></span></div>
+    <div class="widget-box side_content" >
+    <div class="side_title"><a title="隐藏" class="close_btn"><span></span></a></div>
+     <div class="side_list">
+      <div class="widget-header header-color-green2">
+          <h4 class="lighter smaller lang" key="product_list">产品类型列表</h4>
+      </div>
+      <div class="widget-body">
+          <div class="widget-main padding-8">
+              <div  id="treeDemo" class="ztree"></div>
+          </div>
+  </div>
+  </div>
+  </div>  
+  </div>
+<!---->
+ <iframe ID="testIframe" Name="testIframe" FRAMEBORDER=0 SCROLLING=AUTO  SRC="product/productInfoTypeView?productTypeId=0" class="page_right_style"></iframe>
+ </div>
+</div>
+</body>
+</html>
+<script type="text/javascript"> 
+$(function() { 
+	$("#category").fix({
+		float : 'left',
+		//minStatue : true,
+		skin : 'green',	
+		durationTime :false
+	});
+});
+</script>
+<script type="text/javascript">
+//初始化宽度、高度  
+ $(".widget-box").height($(window).height()); 
+ $(".page_right_style").width($(window).width()-220);
+  //当文档窗口发生改变时 触发  
+    $(window).resize(function(){
+	$(".widget-box").height($(window).height());
+	 $(".page_right_style").width($(window).width()-220);
+	})
+
+var code;
+		
+// function showCode(str) {
+// 	if (!code) code = $("#code");
+// 	code.empty();
+// 	code.append("<li>"+str+"</li>");
+// }
+
+if(!ServiceUtil.checkPermission("productType/addProductTypeView")){
+    $("#addParentProduct").remove();
+    $("#addProduct").remove();
+}
+$(document).ready(function(){
+    //刷新iframe中表格的数据
+    $("#testIframe").attr("src","productType/productTypeInfoView?productTypeId=0");
+    //paramData用于保存树节点初始化时需要用到的一些参数信息
+    var paramData={
+        iframeId:"testIframe",//保存iframeID用于点击节点时刷新右边列表的内容
+        tableUrl:"productType/productTypeInfoView?productTypeId=",    //保存url用于点击节点时刷新右边列表的内容所需要的url
+        docmid:"treeDemo",    //保存docmid用于树节点初始化时指定树节点的容器
+        TreeUrl:'productType/getProductTypeByCont.do',//用于树节点初始化时异步请求所访问的url
+        id:"productTypeId", //用于树节点初始化id所对应的实体类属性名称
+        pId:"productTypeParentId",//用于树节点初始化父id所对应的实体类属性名称
+        isParent:"productTypeIsParent",        //用于树节点初始化时判断是否父节点所对应的实体类属性名称
+        perName:"productTypeName" ,   //用于树节点初始化时显示的名称所对应的实体类属性名称
+        perNameEng:"productTypeNameEng"    //用于树节点初始化时显示的名称所对应的实体类属性名称
+    }
+    ZtreeUtil.initTree(paramData);
+    //初始化类型数量
+    $.post('productType/getCountProductTypeByCont.do', {'productTypeParentId':0}, function (obj) {
+            if(!obj.code)
+                $("#countType b").text(obj.data);
+    })
+});	
+</script>

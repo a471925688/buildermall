@@ -1,0 +1,78 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /admin
+  connection-timeout: 20000ms
+#spring.jpa.hibernate.naming.physical-strategy = org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+# stripped before adding them to the entity manager)
+spring:
+  profiles:
+    active: pro
+  freemarker:
+    suffix: .html  #后缀名，默认是.ftl
+    content-type: text/html
+    enabled: true
+    cache: true #缓存配置
+    template-loader-path: classpath:/templates/ #模板加载路径 按需配置
+    charset: UTF-8 #编码格式
+    request-context-attribute: request #请求，类似jsp中的内置对象
+    mvc:
+      static-path-pattern: /static/** #引入静态资源文件
+    resources:
+      static-locations: classpath:/static/
+  jpa:
+#    hibernate:
+#      ddl-auto: update
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    hibernate:
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  #      naming:
+  #        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths: /**
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+logging:
+  level:
+    com:
+      noah_solutions:
+        mapper: debug
+Paydollar:
+  hkd:
+    merchantId: 88142981
+#    merchantId: 88617081
+    loginId: apimall
+    password: mall1402
+  cny:
+    merchantId: 88142981
+#    merchantId: 88617081
+    loginId: apimall
+    password: mall1402
+  orderApiUrl: https://test.paydollar.com/b2cDemo/eng/merchant/api/orderApi.jsp
+#  orderApiUrl: https://www.paydollar.com/b2c2/eng/merchant/api/orderApi.jsp
+#邮箱设置
+email:
+  inland: #內地
+#    host: smtpout.asia.secureserver.net
+#    port: 465
+#    userName: test@noah.solutions
+#    passWord: weilai123
+    host: smtp.exmail.qq.com
+    port: 465
+    userName: info@buildermall.com
+    passWord: Ns998800
+#    userName: 7492037@qq.com
+#    passWord: dxfmohfqrxwhbjeg
+  hk: #香港
+    host: smtpout.asia.secureserver.net
+    port: 465
+    userName: noreply@noah.solutions
+    passWord: 9esus!@#$

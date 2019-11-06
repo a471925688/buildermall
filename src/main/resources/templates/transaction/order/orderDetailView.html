@@ -1,0 +1,310 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+ <link href="${request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="${request.contextPath}/css/style.css"/>
+        <link href="${request.contextPath}/assets/css/codemirror.css" rel="stylesheet">
+        <link rel="stylesheet" href="${request.contextPath}/assets/css/ace.min.css" />
+        <link rel="stylesheet" href="${request.contextPath}/font/css/font-awesome.min.css" />
+        <!--[if lte IE 8]>
+		  <link rel="stylesheet" href="${request.contextPath}/assets/css/ace-ie.min.css" />
+		<![endif]-->
+		<script src="${request.contextPath}/js/jquery-1.9.1.min.js"></script>
+        <script src="${request.contextPath}/assets/js/bootstrap.min.js"></script>
+		<script src="${request.contextPath}/assets/js/typeahead-bs2.min.js"></script>
+        <script type="text/javascript" src="${request.contextPath}/js/H-ui.js"></script>
+        <script src="${request.contextPath }/js/transaction/orderDetail.js" type="text/javascript" ></script>
+        <script src="${request.contextPath }/js/util/serviceUtil.js" type="text/javascript" ></script>
+        <script src="${request.contextPath }/js/util/common.js" type="text/javascript" ></script>
+        <script src="${request.contextPath }/js/lrtk.js" type="text/javascript" ></script>
+<title>订单详细</title>
+</head>
+
+<body>
+<input type="hidden" id="contextPath" value="${request.contextPath }">
+<input type="hidden" id="orderId" name="orderId" value="${orderId!}">
+<div class="margin clearfix">
+<div class="Order_Details_style">
+<div class="Numbering"><span class="lang" key="order_no">訂單信息</span>:<b id ="orderNo">NJHDXJ201509-001</b></div></div>
+ <div class="detailed_style">
+     <div class="Receiver_style">
+         <div class="title_name div_btn_top lang" key="customer_info">訂購人信息
+             <div class="btn_style">
+                 <a href="javascript:void(0)"  class="show_btn_top Statistic_btn lang" key="show"  style="display: none">显示</a>
+                 <a href="javascript:void(0)"  class="hide_btn_top Statistic_btn b_n_btn side_title lang" key="hide" >隐藏</a>
+             </div>
+         </div>
+         <div class="Info_style clearfix">
+             <div class="col-xs-3">
+                 <label class="label_name" > <span class="lang" key="name">訂購人姓名</span>： </label>
+                 <div class="o_content" id="userName">-</div>
+             </div>
+             <div class="col-xs-3">
+                 <label class="label_name"> <span class="lang" key="phone">訂購人電話</span>： </label>
+                 <div class="o_content" id="userPhone">-</div>
+             </div>
+             <div class="col-xs-3">
+                 <label class="label_name"> <span class="lang" key="discount_code">訂購優惠碼</span>： </label>
+                 <div class="o_content"  id="orderDiscountCode">-</div>
+             </div>
+             <div class="col-xs-3">
+                 <label class="label_name"> <span class="lang" key="remarks">客戶備註</span>： </label>
+                 <div class="o_content"  id="orderRemark">-</div>
+             </div>
+<!--             <div class="col-xs-3">-->
+<!--                 <label class="label_name" > <span class="lang" key="whether_to_invoice_or_not">是否開發票</span>： </label>-->
+<!--                 <div class="o_content lang" key="yes" id = "orderInvoice">是</div>-->
+<!--             </div>-->
+<!--             <div class="col-xs-3">-->
+<!--                 <label class="label_name">  <span class="lang" key="invoice_title">發票抬頭</span>： </label>-->
+<!--                 <div class="o_content"  id="orderInvoiceCorporateName">-</div>-->
+<!--             </div>-->
+<!--             <div class="col-xs-3">-->
+<!--                 <label class="label_name">  <span class="lang" key="taxpayer_identification_number">納稅人識別號</span>： </label>-->
+<!--                 <div class="o_content"  id="orderInvoiceBusinessLicense">-</div>-->
+<!--             </div>-->
+         </div>
+     </div>
+ <!--收件人信息-->
+    <div class="Receiver_style">
+     <div class="title_name div_btn_top lang" key="recipient_Info">收件人信息
+         <div class="btn_style">
+             <a href="javascript:void(0)"  class="show_btn_top Statistic_btn lang" key="show"  style="display: none">显示</a>
+             <a href="javascript:void(0)"  class="hide_btn_top Statistic_btn b_n_btn side_title lang" key="hide" >隐藏</a>
+         </div>
+     </div>
+     <div class="Info_style clearfix">
+         <div class="col-xs-3">
+             <label class="label_name">  <span class="lang" key="company">收件人公司</span>： </label>
+             <div class="o_content" id ="orderAddrCompany">-</div>
+         </div>
+        <div class="col-xs-3">  
+         <label class="label_name"><span class=" lang" key="realName">收件人姓名</span> ： </label>
+         <div class="o_content" id = "orderAddrName">-</div>
+        </div>
+        <div class="col-xs-3">  
+         <label class="label_name"  > <span class=" lang" key="phone">收件人电话</span>： </label>
+         <div class="o_content" id = "orderAddrPhone">-</div>
+        </div>
+         <!--<div class="col-xs-3">  -->
+         <!--<label class="label_name"> 收件地邮编： </label>-->
+         <!--<div class="o_content">-</div>-->
+        <!--</div>-->
+         <div class="col-xs-3">
+             <label class="label_name" style="height: 26px"> <span class=" lang" key="region">收件人地區</span>： </label>
+             <div class="o_content" id ="orderAddrAddr">-</div>
+         </div>
+         <div class="col-xs-3">
+             <label class="label_name" style="height: 26px"> <span class=" lang" key="detailed_address">收件人詳址</span>： </label>
+             <div class="o_content" id ="orderAddrDetailedAddr">江苏南京市雨花台区郁金香软件大厦3懂3单元302室</div>
+         </div>
+
+     </div>
+    </div>
+     <div class="Receiver_style">
+         <div class="title_name div_btn_top lang" key="">集運信息
+             <div class="btn_style">
+                 <a href="javascript:void(0)"  class="show_btn_top Statistic_btn lang" key="show"  style="display: none">显示</a>
+                 <a href="javascript:void(0)"  class="hide_btn_top Statistic_btn b_n_btn side_title lang" key="hide" >隐藏</a>
+             </div>
+         </div>
+         <div class="Info_style clearfix">
+             <div class="col-xs-3">
+                 <label class="label_name">  <span class="lang" key="company">公司</span>： </label>
+                 <div class="o_content" id="name">-</div>
+             </div>
+
+
+             <div class="col-xs-3">
+                 <label class="label_name"><span class=" lang" key="realName">收件人姓名</span> ： </label>
+                 <div class="o_content" id = "recName">-</div>
+             </div>
+             <div class="col-xs-3">
+                 <label class="label_name"  > <span class=" lang" key="phone">收件人电话</span>： </label>
+                 <div class="o_content" id = "phone">-</div>
+             </div>
+             <div class="col-xs-3">
+                 <label class="label_name" style="height: 26px"> <span class=" lang" key="region">收件人地區</span>： </label>
+                 <div class="o_content" id="address">-</div>
+             </div>
+             <div class="col-xs-3">
+                 <label class="label_name"> <span class="lang" key="detailed_address">詳細地址</span>： </label>
+                 <div class="o_content"  id="detailed_address">-</div>
+             </div>
+         </div>
+     </div>
+    <!--订单信息-->
+    <div class="product_style">
+    <div class="title_name div_btn_top"><span class="lang" key="product_info">產品信息</span>
+        <div class="btn_style">
+            <a href="javascript:void(0)"  class="show_btn_top Statistic_btn lang" key="show"  style="display: none">显示</a>
+            <a href="javascript:void(0)"  class="hide_btn_top Statistic_btn b_n_btn side_title lang" key="hide" >隐藏</a>
+        </div>
+    </div>
+    <div class="Info_style clearfix" id="orderProduct">
+    </div>
+    </div>
+    <!--总价-->
+    <div class="Total_style">
+     <div class="Info_style clearfix">
+      <div class="col-xs-3">  
+         <label class="label_name"> <span class=" lang" key="payment_method" >支付方式</span>： </label>
+         <div class="o_content lang" id="orderPaymentMethod" >-</div>
+        </div>
+
+        <div class="col-xs-3">  
+         <label class="label_name" > <span class=" lang" key="payment_status" >支付状态</span>： </label>
+         <div class="o_content lang" id="orderPaymentStatus">-</div>
+        </div>
+         <div class="col-xs-3">
+             <label class="label_name"> <span class=" lang" key="order_status" >订单状态</span>： </label>
+             <div class="o_conten lang" id="orderState">-</div>
+         </div>
+        <div class="col-xs-3">  
+         <label class="label_name"> <span class=" lang" key="create_time" >訂單生產日期</span>： </label>
+         <div class="o_content" id="orderCreateTime">-</div>
+        </div>
+         <div class="col-xs-3">  
+         <label class="label_name">  <span class=" lang" key="express_company" >快遞名稱</span>： </label>
+         <div class="o_content lang" id="orderExpressCompany">-</div>
+        </div>
+         <!--<div class="col-xs-3">  -->
+         <!--<label class="label_name"> 發貨日期： </label>-->
+         <!--<div class="o_content">2016-7-19</div>-->
+        <!--</div>-->
+        </div>
+      <div class="Total_m_style"><span class="Total"><span class="lang" key="sum">總數</span>：<b id="totalNum">10</b></span><span class="Total_price" ><span class="lang" key="total_price">總價</span>：<b id="orderTotalPrice">$345</b></span></div>
+    </div>
+    
+    <!--物流信息-->
+     <div class="Logistics_style clearfix" id="logistics">
+         <div class="title_name div_btn_top" ><span class="lang" key="logistics_info"></span>
+             <div class="btn_style">
+                 <a href="javascript:void(0)"  class="show_btn_top Statistic_btn lang" key="show" style="display: none">显示</a>
+                 <a href="javascript:void(0)"  class="hide_btn_top Statistic_btn b_n_btn side_title lang" key="hide">隐藏</a>
+             </div>
+         </div>
+         <div class="prompt"><img src="${request.contextPath }/images/meiyou.png" /><p class="lang" key="no_logistics_information">暂无物流信息！</p></div>
+         <div data-mohe-type="kuaidi_new " class="g-mohe mohe-kuaidi_new" >
+             <div class="mohe-kuaidi_new_nucom">
+                 <div class="mohe-wrap mh-wrap">
+                     <div class="mh-cont mh-list-wrap mh-unfold">
+                         <div class="mh-list">
+                             <ul>
+                                 <!--<li class="first">-->
+                                 <!--<p>2015-04-28 11:23:28</p>-->
+                                 <!--<p>妥投投递并签收，签收人：他人收 他人收</p>-->
+                                 <!--<span class="before"></span><span class="after"></span><i class="mh-icon mh-icon-new"></i></li>-->
+                                 <!--<li>-->
+                                 <!--<p>2015-04-28 07:38:44</p>-->
+                                 <!--<p>深圳市南油速递营销部安排投递（投递员姓名：蔡远发<a href="tel:18718860573">18718860573</a>;联系电话：）</p>-->
+                                 <!--<span class="before"></span><span class="after"></span></li>-->
+                                 <!--<li>-->
+                                 <!--<p>2015-04-28 05:08:00</p>-->
+                                 <!--<p>到达广东省邮政速递物流有限公司深圳航空邮件处理中心处理中心（经转）</p>-->
+                                 <!--<span class="before"></span><span class="after"></span></li>-->
+                                 <!--<li>-->
+                                 <!--<p>2015-04-28 00:00:00</p>-->
+                                 <!--<p>离开中山市 发往深圳市（经转）</p>-->
+                                 <!--<span class="before"></span><span class="after"></span></li>-->
+                                 <!--<li>-->
+                                 <!--<p>2015-04-27 15:00:00</p>-->
+                                 <!--<p>到达广东省邮政速递物流有限公司中山三角邮件处理中心处理中心（经转）</p>-->
+                                 <!--<span class="before"></span><span class="after"></span></li>-->
+                                 <!--<li>-->
+                                 <!--<p>2015-04-27 08:46:00</p>-->
+                                 <!--<p>离开泉州市 发往中山市</p>-->
+                                 <!--<span class="before"></span><span class="after"></span></li>-->
+                                 <!--<li>-->
+                                 <!--<p>2015-04-26 17:12:00</p>-->
+                                 <!--<p>泉州市速递物流分公司南区电子商务业务部已收件，（揽投员姓名：王晨光;联系电话：<a href="tel:13774826403">13774826403</a>）</p>-->
+                                 <!--<span class="before"></span><span class="after"></span></li>-->
+                                 <!--<li>-->
+                                 <!--<p>2015-04-26 17:12:00</p>-->
+                                 <!--<p>貨物準備中</p>-->
+                                 <!--<span class="before"></span><span class="after"></span></li>-->
+
+
+                             </ul>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+     </div>
+
+     <!--订单操作记录-->
+     <div class="Logistics_style clearfix" id="logistics1">
+         <div class="title_name div_btn_top" ><span class="lang" key="order_operational_record"></span>
+             <div class="btn_style">
+                 <a href="javascript:void(0)"  class="show_btn_top Statistic_btn lang" key="show" >显示</a>
+                 <a href="javascript:void(0)"  class="hide_btn_top Statistic_btn b_n_btn side_title lang" key="hide" style="display: none">隐藏</a>
+             </div>
+         </div>
+         <div data-mohe-type="kuaidi_new "  style="display: none" class="g-mohe mohe-kuaidi_new" id="orderRecords">
+             <div class="mohe-kuaidi_new_nucom">
+                 <div class="mohe-wrap mh-wrap">
+                     <div class="mh-cont mh-list-wrap mh-unfold">
+                         <div class="mh-list">
+                             <ul>
+
+                             </ul>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+     </div>
+     <!--交易记录-->
+     <div class="Logistics_style clearfix" id="logistics2">
+         <div class="title_name div_btn_top" ><span class="lang" key="transaction_record"></span>
+             <div class="btn_style">
+                 <a href="javascript:void(0)"  class="show_btn_top Statistic_btn lang" key="show" >显示</a>
+                 <a href="javascript:void(0)"  class="hide_btn_top Statistic_btn b_n_btn side_title lang" key="hide" style="display: none">隐藏</a>
+             </div>
+         </div>
+         <div data-mohe-type="kuaidi_new "  style="display: none" class="g-mohe mohe-kuaidi_new" id="transactionRecord">
+             <div class="mohe-kuaidi_new_nucom">
+                 <div class="mohe-wrap mh-wrap">
+                     <div class="mh-cont mh-list-wrap mh-unfold">
+                         <div class="mh-list">
+                             <ul>
+                             </ul>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+     </div>
+<div class="Button_operation">
+				<button onclick="javascript :history.back(-1)" class="btn btn-primary radius" type="submit"><i class="icon-save "></i><span class="lang" key="go_back"></span></button>
+    <button onclick="javascript :history.back(-1);" class="btn btn-default radius" type="button">&nbsp;&nbsp;<span class="lang" key="cancel"></span>&nbsp;&nbsp;</button>
+			</div>
+ </div>
+</div>
+</body>
+</html>
+<script>
+
+    $("#logistics").fix({
+        skin : 'green',
+        durationTime :false,
+        close_btn:'.close_btn',
+        show_btn:'.show_btn_top',
+        side_list:'.hide_style',
+        close_btn_width:60,
+        top_btn:true
+    });
+    jQuery(function($) {
+        OrderDetail.initOrderDetailView()
+    })
+
+
+</script>

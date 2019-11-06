@@ -1,0 +1,129 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <script src="${request.contextPath }/js/jquery-1.9.1.min.js"></script>
+    <link rel="stylesheet" href="${request.contextPath }/layui/css/layui.css"  media="all">
+    <script src="${request.contextPath }/layui/layui.js" charset="utf-8"></script>
+    <script src="${request.contextPath }/js/admin/admin.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/uploadUtil.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/common.js" type="text/javascript" ></script>
+    <title>添加管理员</title>
+</head>
+<body>
+<input type="hidden" id="contextPath" value="${request.contextPath }">
+<form class="layui-form" action="" lay-filter="initAdmin">
+    <input type="hidden" id="adminId" name="adminId" value="${adminId!}">
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" key="login_name">用户名</label>
+        <div class="layui-input-inline" style="margin-left: 40px;">
+            <input type="text" id="loginUserName" name="loginUserName" lay-verify="text|required"  autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" key="password">密码</label>
+        <div class="layui-input-inline" style="margin-left: 40px;">
+            <input type="password" id="loginPassWord"  name="loginPassWord" lay-verify="pass|required"  autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid layui-word-aux lang" key="password_remarks">请填写6到12位密码</div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" key="type">类型</label>
+        <div class="layui-input-block" id="adminTypecheckbox"   style="margin-left: 170px;">
+            <input type="radio" id= "Supplier" name="adminType" lay-filter="adminTypeRadio"  value="1" title="<span class='lang' key='administrators'>管理员</span>" checked="">
+            <input type="radio" id= "admin"  name="adminType" lay-filter="adminTypeRadio"  value="2" title="<span class='lang' key='supplier'></span>">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label lang" key="role">角色</label>
+            <div class="layui-input-inline"  style="margin-left: 40px;">
+                <select name="roleId" id="roleSelect" lay-verify="required" lay-search="roleId">
+                    <option value="" class="lang" key="Please_select_a_role">请选择一个角色</option>
+                    <!--<option value="1">layer</option>-->
+                    <!--<option value="2">form</option>-->
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" key="real_name">姓名</label>
+        <div class="layui-input-inline" style="margin-left: 40px;">
+            <input type="text" id="adminRealName" name="adminRealName" lay-verify="text|required" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" key="gender">性别</label>
+        <div class="layui-input-block" id="adminGender" style="margin-left: 170px;">
+            <input type="radio" name="adminGender" value="secrecy" title="<span class='lang' key='secrecy'>保密</span>" checked="">
+            <input type="radio" name="adminGender" value="male" title="<span class='lang' key='male'>男</span>" >
+            <input type="radio" name="adminGender" value="female" title="<span class='lang' key='female'>女</span>">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" key="phone">电话</label>
+        <div class="layui-input-inline" style="margin-left: 40px;">
+            <input type="text" id="adminPhone" name="adminPhone" lay-verify="required|phone"  autocomplete="off"  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" key="email">邮箱</label>
+        <div class="layui-input-inline" style="margin-left: 40px;">
+            <input type="text" id="adminEmail" name="adminEmail" lay-verify="email|required"  autocomplete="off"   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label lang" key="address">地址</label>
+        <div class="layui-input-inline" style="margin-left: 40px;">
+            <input type="text" id="adminAddress" name="adminAddress" lay-verify="text"  autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+
+    <!--<div class="layui-form-item layui-form-text">-->
+        <!--<label class="layui-form-label">管理员描述</label>-->
+        <!--<div class="layui-input-block" style="margin-left: 150px;">-->
+            <!--<textarea placeholder="请输入内容" name="perDescribe" id="perDescribe" class="layui-textarea"></textarea>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="layui-form-item">
+        <div class="layui-input-block" style="margin-left: 170px;">
+            <button class="layui-btn lang" key="submit" lay-submit id="submitAdmin" lay-filter="submitAdmin">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary lang" key="reset">重置</button>
+        </div>
+    </div>
+</form>
+</div>
+<script type="text/javascript" src="${request.contextPath }/Widget/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="${request.contextPath }/Widget/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="${request.contextPath }/assets/layer/layer.js"></script>
+<script type="text/javascript" src="${request.contextPath }/js/H-ui.js"></script>
+<script type="text/javascript" src="${request.contextPath }/js/H-ui.admin.js"></script>
+<script type="text/javascript">
+    $(function(){
+        // $('.skin-minimal input').iCheck({
+        // 	checkboxClass: 'icheckbox-blue',
+        // 	radioClass: 'iradio-blue',
+        // 	increaseArea: '20%'
+        // });
+        //
+        // $("#addAdmin").Validform({
+        // 	tiptype:2,
+        // 	callback:function(form){
+        // 		form[0].submit();
+        // 		var index = parent.layer.getFrameIndex(window.name);
+        // 		parent.$('.btn-refresh').click();
+        // 		parent.layer.close(index);
+        // 	}
+        // });
+        Admin.initAddOrUpdateAdmin();
+    });
+</script>
+</body>
+</html>

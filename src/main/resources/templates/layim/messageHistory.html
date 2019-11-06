@@ -1,0 +1,161 @@
+@{
+Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>消息记录</title>
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/default/easyui.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/themes/icon.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/css/main.css")" />
+    <link rel="stylesheet" type="text/css" href="~/Scripts/plugins/layui.all/css/modules/layim/layim.css" />
+    <style type="text/css">
+        .layim-chat-main {
+            height: 100%;
+            padding: 0px;
+        }
+        .layim-chat-main ul {
+            padding: 15px 15px 5px 15px;
+        }
+    </style>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.0.min.js")"></script>
+    <script type="text/javascript" src="~/Scripts/taffy.utils.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/layui/laytpl/laytpl.js"></script>
+    <script type="text/javascript" src="~/Scripts/plugins/layui/layer/layer.js"></script>
+    <script type="text/javascript" src="~/Scripts/easyui/jquery.easyui.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            getData(1, function (result) {
+                var rowData = JSON.parse(result.rows);
+                var endPage = Math.ceil(result.total / 20);
+                $("#id-easyui-pagination").pagination({
+                    pageNumber: 1,
+                    pageSize: 20,
+                    total: result.total,
+                    showPageList: false,
+                    displayMsg: '',
+                    layout: ['list', 'sep', 'first', 'prev', 'links', 'next', 'last', 'sep', 'refresh'],
+                    buttons: $('#buttons'),
+                    links: 5,
+                    onSelectPage: function (pageNumber, pageSize) {
+                        getData(pageNumber, function (result) {
+                            laytpl($("#id-layim-chat-main-template").html()).render({
+                                list: JSON.parse(result.rows)
+                            }, function (html) {
+                                $(".layim-chat-main").html(html);
+                            });
+                        });
+                    },
+                    onRefresh: function (pageNumber, pageSize) {
+                        refresh();
+                    }
+                });
+                $("#id-easyui-pagination").pagination('select', endPage);
+                setTimeout(function () {
+                    var scrollTop = $(".layim-chat-main")[0].scrollHeight;
+                    $(".layim-chat-main").animate({ scrollTop: scrollTop }, 800);
+                }, 500);
+            });
+        });
+        function refresh() {
+            utils.showLoading($("body"))
+            getData(0, function (result) {
+                var endPage = Math.ceil(result.total / 20);
+                $("#id-easyui-pagination").pagination('refresh', {
+                    total: result.total,
+                    pageNumber: endPage
+                }).pagination('select', endPage);
+                setTimeout(function () {
+                    var scrollTop = $(".layim-chat-main")[0].scrollHeight;
+                    $(".layim-chat-main").animate({ scrollTop: scrollTop }, 800);
+                    utils.hideLoading($("body"))
+                }, 500);
+            });
+        }
+        function getData(page, fn) {
+            $.ajaxGet({
+                url: "/WebIM/GetMessageHistory",
+                cache: false,
+                data: {
+                    page: page,
+                    chatID: utils.getUrlParam("id"),
+                    type: utils.getUrlParam("type"),
+                    keyWord: $("#id-easyui-search").searchbox("getValue")
+                },
+                success: function (result) {
+                    fn(result);
+                }
+            });
+        }
+        function getFaceImg(content) {
+            var faces = ["[微笑]", "[嘻嘻]", "[哈哈]", "[可爱]", "[可怜]", "[挖鼻]", "[吃惊]", "[害羞]", "[挤眼]", "[闭嘴]", "[鄙视]", "[爱你]", "[泪]", "[偷笑]", "[亲亲]", "[生病]", "[太开心]", "[白眼]", "[右哼哼]", "[左哼哼]", "[嘘]", "[衰]", "[委屈]", "[吐]", "[哈欠]", "[抱抱]", "[怒]", "[疑问]", "[馋嘴]", "[拜拜]", "[思考]", "[汗]", "[困]", "[睡]", "[钱]", "[失望]", "[酷]", "[色]", "[哼]", "[鼓掌]", "[晕]", "[悲伤]", "[抓狂]", "[黑线]", "[阴险]", "[怒骂]", "[互粉]", "[心]", "[伤心]", "[猪头]", "[熊猫]", "[兔子]", "[ok]", "[耶]", "[good]", "[NO]", "[赞]", "[来]", "[弱]", "[草泥马]", "[神马]", "[囧]", "[浮云]", "[给力]", "[围观]", "[威武]", "[奥特曼]", "[礼物]", "[钟]", "[话筒]", "[蜡烛]", "[蛋糕]"]
+            $(faces).each(function (i, item) {
+                if (content.indexOf("face" + item) > -1) {
+                    var src = "/Scripts/plugins/layui.all/images/face/" + i + ".gif"
+                    var img = '<img alt="' + item + '" title="' + item + '" src="' + src + '"/>';
+                    var face = "face" + item.replace("[", "\\[").replace("]", "\\]");
+                    var reg = new RegExp(eval("/" + face + "/g"));
+                    content = content.replace(reg, img);
+                }
+            });
+            return content;
+        }
+    </script>
+</head>
+<body class="easyui-layout" fit="true">
+<div data-options="region:'center'">
+    <div class="layim-chat-main"></div>
+</div>
+<div data-options="region:'south',collapsed:false" style="height:35px;">
+    <div id="id-easyui-pagination" style="line-height:30px;"></div>
+    <div id="buttons">
+        <table style="border-spacing:0">
+            <tr>
+                <td>
+                    <input id="id-easyui-search" class="easyui-searchbox" data-options="prompt:'请输入关键字',searcher:refresh" style="width:150px;height:25px">
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script type="text/html" id="id-layim-chat-main-template">
+    <ul>
+        {{# for(var i=0;i<d.list.length;i++){ }}
+        {{# if (d.list[i].IsMine=="1"){}}
+        <li class="layim-chat-mine">
+            <div class="layim-chat-user">
+                <img src="{{d.list[i].FaceSrc}}">
+                {{# var addTime=utils.dateFormatter(d.list[i].CreateOn,'yyyy-MM-dd hh:mm:ss')}}
+                <cite><i>{{addTime}}</i>{{d.list[i].UserName}}</cite>
+            </div>
+            <div class="layim-chat-text">
+                {{# var content=getFaceImg(d.list[i].ChatContent)}}
+                {{content}}
+            </div>
+        </li>
+        {{# }else {}}
+        <li>
+            <div class="layim-chat-user">
+                <img src="{{d.list[i].FaceSrc}}">
+                {{# var addTime=utils.dateFormatter(d.list[i].CreateOn,'yyyy-MM-dd hh:mm:ss')}}
+                <cite>
+                    {{d.list[i].UserName}}
+                    <i>{{addTime}}</i>
+                </cite>
+            </div>
+            <div class="layim-chat-text">
+                {{# var content=getFaceImg(d.list[i].ChatContent)}}
+                {{content}}
+            </div>
+        </li>
+        {{# } }}
+        {{# } }}
+    </ul>
+</script>
+</body>
+</html>

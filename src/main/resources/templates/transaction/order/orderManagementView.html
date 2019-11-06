@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css"/>
+    <link href="assets/css/codemirror.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/ace.min.css" />
+    <link rel="stylesheet" href="${request.contextPath }/layui/css/layui.css"  media="all">
+    <link rel="stylesheet" href="font/css/font-awesome.min.css" />
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
+    <![endif]-->
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="${request.contextPath}/layui/layui.js" charset="utf-8"></script>
+    <script src="assets/laydate/laydate.js" type="text/javascript"></script>
+    <script src="assets/js/jquery.easy-pie-chart.min.js"></script>
+    <script src="${request.contextPath }/js/transaction/orderManagement.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/product/brand.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/lrtk.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/serviceUtil.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/common.js" type="text/javascript" ></script>
+    <title>订单管理</title>
+</head>
+<style type="text/css">
+    .layui-table-cell {
+        height: auto;
+    }
+    .layui-table-view .layui-table {
+        position: relative;
+        width: 100%;
+        margin: 0;
+    }
+</style>
+<body>
+<input type="hidden" id="contextPath" value="${request.contextPath}">
+<div class="margin clearfix">
+    <div class="cover_style" id="cover_style">
+        <div class="top_style Order_form" id="Order_form_style">
+            <div class="type_title"><span class="lang" key="proportion_of_shopping_products">购物产品比例</span>
+                <div class="btn_style">
+                    <a href="javascript:void(0)"  class="show_btn_top Statistic_btn lang" key="show" style="display: none">显示</a>
+                    <a href="javascript:void(0)"  class="close_btn Statistic_btn b_n_btn side_title lang" key="hide">隐藏</a>
+                </div>
+            </div>
+            <div class="hide_style clearfix" style="height: 148px">
+
+                <!--<div class="proportion"> <div class="easy-pie-chart percentage" data-percent="50" data-color="#D15B47"><span class="percent">50</span>%</div><span class="name">建筑</span></div>-->
+                <!--<div class="proportion"> <div class="easy-pie-chart percentage" data-percent="50" data-color="#87CEEB"><span class="percent">50</span>%</div><span class="name">装修</span></div>-->
+                <!--<div class="proportion"> <div class="easy-pie-chart percentage" data-percent="90" data-color="#87B87F"><span class="percent">90</span>%</div><span class="name">数码配件</span></div>-->
+                <!--<div class="proportion"> <div class="easy-pie-chart percentage" data-percent="30" data-color="#d63116"><span class="percent">30</span>%</div><span class="name">手机</span></div>-->
+                <!--<div class="proportion"> <div class="easy-pie-chart percentage" data-percent="60" data-color="#ff6600"><span class="percent">60</span>%</div><span class="name">电脑</span></div>-->
+                <!--<div class="proportion"> <div class="easy-pie-chart percentage" data-percent="40" data-color="#2ab023"><span class="percent">40</span>%</div><span class="name">电子产品</span></div>-->
+                <!--<div class="proportion"> <div class="easy-pie-chart percentage" data-percent="46" data-color="#1e3ae6"><span class="percent">46</span>%</div><span class="name">厨房用品</span></div>-->
+                <!--<div class="proportion"> <div class="easy-pie-chart percentage" data-percent="65" data-color="#c316a9"><span class="percent">65</span>%</div><span class="name">家用电器</span></div>-->
+                <!--<div class="proportion"> <div class="easy-pie-chart percentage" data-percent="56" data-color="#13a9e1"><span class="percent">56</span>%</div><span class="name">卫浴</span></div>-->
+            </div>
+        </div>
+        <!--内容-->
+        <div class="centent_style" id="centent_style">
+            <!--<div id="covar_list" class="order_list">-->
+                <div id="scrollsidebar" class="left_Treeview">
+                    <div class="show_btn" id="rightArrow"><span></span></div>
+                    <div class="widget-box side_content" >
+                        <div class="side_title"><a title="隐藏" class="close_btn"><span></span></a></div>
+                        <div class="side_list"><div class="widget-header header-color-green2"><h4 class="lighter smaller lang"  key="order_status" >訂單狀態</h4></div>
+                            <div class="widget-body">
+                                <ul class="b_P_Sort_list">
+                                    <li onclick="Order.getOrder()"><i class="orange  fa fa-reorder"></i><a href="#"><label class="lang" key="all_order">全部訂單</label>(<span>0</span>)</a></li>
+                                    <li onclick="Order.getOrder(8)"><i class="fa fa-sticky-note pink "></i> <a href="#"><label class="lang" key="unquoted">待報價</label>(<span>0</span>)</a></li>
+                                    <li onclick="Order.getOrder(1)"><i class="fa fa-sticky-note pink "></i> <a href="#"><label class="lang" key="unpaid">待付款</label>(<span>0</span>)</a></li>
+                                    <li onclick="Order.getOrder(2)"><i class="fa fa-sticky-note pink "></i> <a href="#"><label class="lang" key="unshipped">待發貨</label>(<span>0</span>)</a></li>
+                                    <li onclick="Order.getOrder(3)"><i class="fa fa-sticky-note pink "></i> <a href="#"><label class="lang" key="unReceiv">待收貨</label>(<span>0</span>)</a> </li>
+                                    <li onclick="Order.getOrder(4)"><i class="fa fa-sticky-note pink "></i> <a href="#"><label class="lang" key="completed">已完成</label>(<span>0</span>)</a> </li>
+                                    <li onclick="Order.getOrder(5)"><i class="fa fa-sticky-note pink "></i> <a href="#"><label class="lang" key="cancelled">已取消</label>(<span>0</span>)</a> </li>
+                                    <li onclick="Order.getOrder(6)"><i class="fa fa-sticky-note pink "></i> <a href="#"><label class="lang" key="pending_refund">待退款</label>(<span>0</span>)</a> </li>
+                                    <li onclick="Order.getOrder(7)"><i class="fa fa-sticky-note pink "></i> <a href="#"><label class="lang" key="refunded">已退款</label>(<span>0</span>)</a> </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--左侧样式-->
+                <div class="list_right_style">
+                    <div class="search_style">
+                        <form class="layui-form" action="" lay-filter="searchOrder">
+                            <ul class="search_content clearfix">
+                                <li><label class="l_f lang" key="order_no">订单编号</label><input name="orderNo" type="text"  id="orderNo" class="text_add" placeholder="order No" style=" width:250px"></li>
+                                <li><label class="l_f lang" key="create_time">时间</label><input class="inline laydate-icon" name="orderCreateTime" id="orderCreateTime" style=" margin-left:10px;"></li>
+                                <li style="width:90px;"><button button class="btn_search" lay-submit id="searchOrder" lay-filter="searchOrder"><i class="fa fa-search"></i><span class="lang" key="query">查询</span></button></li>
+                            </ul>
+                        </form>
+                    </div>
+                    <div>
+                    <table class="layui-hide" id="orderManagementList" lay-filter="orderManagementList">
+                    </table>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+</div>
+<!--发货-->
+
+<div id="Delivery_stop" style=" display:none">
+    <div class="">
+        <div class="content_style">
+            <div class="form-group"><label style="width: 90px;" class="col-sm-2 control-label no-padding-right lang" key="express_company" for="form-field-1">快递公司 </label>
+                <div class="col-sm-9"><select class="form-control" id="form-field-select-1">
+                    <option class="lang" key="choose_express" value="">--选择快递--</option>
+                    <option value="1" class="lang" key="debang_express">德邦快遞</option>
+                    <option value="2">顺丰快递</option>
+                    <!--<option value="1">天天快递</option>-->
+                    <!--<option value="2">圆通快递</option>-->
+                    <!--<option value="3">中通快递</option>-->
+                    <!--<option value="5">申通快递</option>-->
+                    <!--<option value="6">邮政EMS</option>-->
+                    <!--<option value="7">邮政小包</option>-->
+                    <!--<option value="8">韵达快递</option>-->
+                </select></div>
+            </div>
+            <div class="form-group"><label style="width: 90px" class="col-sm-2 control-label no-padding-right lang" key="express_number" for="form-field-1"> 快递号 </label>
+                <div class="col-sm-9"><input type="text" id="form-field-1"  class="col-xs-10 col-sm-10" style="margin-left:0px;width: 100%"></div>
+            </div>
+            <!--<div class="form-group"><label class="col-sm-2 control-label no-padding-right" for="form-field-1">货到付款 </label>-->
+                <!--<div class="col-sm-9"><label><input name="checkbox" type="checkbox" class="ace" id="checkbox"><span class="lbl"></span></label></div>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<div style="display: none" id="orderProduct"><table class="layui-hide" id="orderProductList" lay-filter="orderProductList" ></div>
+
+</table>
+
+</body>
+
+</html>
+
+<script>
+
+    $(function() {
+        $("#centent_style").fix({
+            skin : 'green',
+            durationTime :false,
+            stylewidth:'220',
+            spacingw:50,//设置隐藏时的距离
+            spacingh:270,//设置显示时间距
+            table_menu:'.list_right_style'
+        });
+        $("#Order_form_style").fix({
+            skin : 'green',
+            durationTime :false,
+            close_btn:'.close_btn',
+            show_btn:'.show_btn_top',
+            side_list:'.hide_style',
+            close_btn_width:60,
+            top_btn:true
+        });
+    });
+
+    //时间选择
+    laydate({
+        elem: '#orderCreateTime',
+        event: 'focus'
+    });
+
+   // 初始化宽度、高度
+    var heights=$(".top_style").outerHeight()+47;
+    $("#scrollsidebar").height($(window).height()-heights);
+    $(".page_right_style").width($(window).width()-220);
+    $(".left_Treeview,.list_right_style").height($(window).height()-heights-2);
+    $(".list_right_style").width($(window).width()-250);
+    //当文档窗口发生改变时 触发
+    $(window).resize(function(){
+        $("#scrollsidebar").height($(window).height()-heights);
+        $(".page_right_style").width($(window).width()-220);
+        $(".left_Treeview,.list_right_style").height($(window).height()-heights-2);
+        $(".list_right_style").width($(window).width()-250);
+    })
+    //比例
+    var oldie = /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase());
+    $('.easy-pie-chart.percentage').each(function(){
+        $(this).easyPieChart({
+            barColor: $(this).data('color'),
+            trackColor: '#EEEEEE',
+            scaleColor: false,
+            lineCap: 'butt',
+            lineWidth: 10,
+            animate: oldie ? false : 1000,
+            size:103
+        }).css('color', $(this).data('color'));
+    });
+
+    $('[data-rel=tooltip]').tooltip();
+    $('[data-rel=popover]').popover({html:true});
+</script>
+<script>
+    //订单列表
+    jQuery(function($) {
+
+        // $.post($("#contextPath").val()+'/productType/getAllProductTypeOrderByLv.do', {level:1}, function (obj) {
+        //
+        // })
+        // Brand.initBrandView();
+        Order.initOrderView();
+    });
+</script>

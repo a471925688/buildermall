@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" href="assets/css/ace.min.css" />
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+        <link href="assets/css/codemirror.css" rel="stylesheet">
+		<!--[if IE 7]>
+		  <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+        <!--[if lte IE 8]>
+		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
+		<![endif]-->
+		<script src="assets/js/ace-extra.min.js"></script>
+		<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+        		<!--[if !IE]> -->
+		<script src="assets/js/jquery.min.js"></script>
+		<!-- <![endif]-->
+        <script src="assets/dist/echarts.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+    <script src="${request.contextPath }/js/home/home.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/serviceUtil.js" type="text/javascript" ></script>
+    <script src="${request.contextPath }/js/util/common.js" type="text/javascript" ></script>
+       <title></title>
+       </head>		
+<body>
+<input type="hidden" id="contextPath" value="${request.contextPath }">
+<div class="page-content clearfix" >
+ <div class="alert alert-block alert-success" id="showLoginInfo">
+  <button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
+     <i class="icon-ok green"></i><span class="lang" key="welcome_to_use">欢迎使用</span><strong class="green"><span  class="lang" key="background_anagement_system">后台管理系统</span><small>(buildermall)</small></strong><span>,你本次登录时间为2016年7月12日13时34分，登录IP:192.168.1.110.	</span>
+ </div>
+ <div class="state-overview clearfix">
+                  <div class="col-lg-3 col-sm-6">
+                      <section class="panel">
+                      <a href="#" title="商城会员">
+                          <div class="symbol terques">
+                             <i class="icon-user"></i>
+                          </div>
+                          <div class="value">
+                              <h1 id="user_num">34522</h1>
+                              <p class="lang" key="mall_user">商城用户</p>
+                          </div>
+                          </a>
+                      </section>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                      <section class="panel">
+                          <div class="symbol red">
+                              <i class="icon-tags"></i>
+                          </div>
+                          <div class="value">
+                              <h1 id="suppliers_num">10</h1>
+                              <p class="lang" key="mall_suppliers"></p>
+                          </div>
+                      </section>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                      <section class="panel">
+                          <div class="symbol yellow">
+                              <i class="icon-shopping-cart"></i>
+                          </div>
+                          <div class="value">
+                              <h1 id="order_num">345</h1>
+                              <p class="lang" key="mall_order">商城订单</p>
+                          </div>
+                      </section>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                      <section class="panel">
+                          <div class="symbol blue">
+                              <i class="icon-bar-chart"></i>
+                          </div>
+                          <div class="value">
+                              <h1>$<span id="transaction_amount">0</span></h1>
+                              <p class="lang" key="transaction_record">交易记录</p>
+                          </div>
+                      </section>
+                  </div>
+              </div>
+             <!--实时交易记录-->
+             <div class="clearfix">
+              <div class="Order_Statistics ">
+          <div class="title_name lang" key="order_statistics">订单统计信息</div>
+           <table class="table table-bordered">
+           <tbody>
+           <tr><td class="name lang" key="unpaid_order">待付款订单</td><td class="munber"><a href="#" id="unpaid_order_num">0</a>&nbsp;<span></span></td></tr>
+           <tr><td class="name lang" key="unshipped_order">待发货订单：</td><td class="munber"><a href="#" id="unshipped_order_num">10</a>&nbsp;<span></span></td></tr>
+           <tr><td class="name lang" key="unReceiv_order">待收貨订单：</td><td class="munber"><a href="#" id="unReceiv_order_num">13</a>&nbsp;<span></span></td></tr>
+           <tr><td class="name lang" key="completed_order">已成交订单数：</td><td class="munber"><a href="#" id="completed_order_num">26</a>&nbsp;<span></span></td></tr>
+           <tr><td class="name lang" key="pending_refund_order"></td><td class="munber"><a href="#" id="pending_refund_order_num">26</a>&nbsp;<span></span></td></tr>
+           </tbody>
+          </table>
+         </div> 
+         <div class="Order_Statistics">
+          <div class="title_name lang" key="commodity_statistics">商品统计信息</div>
+           <table class="table table-bordered">
+           <tbody>
+           <tr><td class="name lang" key="total_commodity">商品总数：</td><td class="munber"><a href="#" id ="product_totle">340</a>&nbsp;</td></tr>
+           <tr><td class="name lang" key="total_sold">售出总数：</td><td class="munber"><a href="#" id="total_sold">10</a>&nbsp;</td></tr>
+           <tr><td class="name lang" key="itemUppershelf">上架商品：</td><td class="munber"><a href="#" id ="itemUppershelf_num">13</a>&nbsp;</td></tr>
+           <tr><td class="name lang" key="itemDownshelf">下架商品：</td><td class="munber"><a href="#" id="itemDownshelf_num">26</a>&nbsp;</td></tr>
+           <tr><td class="name lang" key="commodity_review">商品评论：</td><td class="munber"><a href="#">21s6</a>&nbsp;</td></tr>
+
+           </tbody>
+          </table>
+         </div> 
+         <div class="Order_Statistics">
+          <div class="title_name lang" key="user_login_statistics">用戶登录统计信息</div>
+           <table class="table table-bordered">
+           <tbody>
+           <tr><td class="name lang" key="member_login">会员登录：</td><td class="munber"><a href="#" id="member_login">3240</a>&nbsp;</td></tr>
+           <tr><td class="name lang" key="admin_login">管理員登录：</td><td class="munber"><a href="#" id="admin_login">1130</a>&nbsp;</td></tr>
+           <tr><td class="name lang" key="vendor_login">供應商登录：</td><td class="munber"><a href="#" id="vendor_login">1130</a>&nbsp;</td></tr>
+           <!--<tr><td class="name">QQ会员登录：</td><td class="munber"><a href="#">1130</a>&nbsp;次</td></tr>-->
+           </tbody>
+          </table>
+         </div> 
+             <!--<div class="t_Record">
+               <div id="main" style="height:300px; overflow:hidden; width:100%; overflow:auto" ></div>     
+              </div> -->
+         <div class="news_style">
+          <div class="title_name lang" key="latest_news">最新消息</div>
+          <ul class="list">
+           <!--<li><i class="icon-bell red"></i><a href="#">后台系统找那个是开通了。</a></li>-->
+           <!--<li><i class="icon-bell red"></i><a href="#">6月共处理订单3451比，作废为...</a></li>-->
+           <!--<li><i class="icon-bell red"></i><a href="#">后台系统找那个是开通了。</a></li>-->
+           <!--<li><i class="icon-bell red"></i><a href="#">后台系统找那个是开通了。</a></li>-->
+           <!--<li><i class="icon-bell red"></i><a href="#">后台系统找那个是开通了。</a></li>-->
+          </ul>
+         </div> 
+         </div>
+ <!--记录-->
+ <div class="clearfix">
+  <div class="home_btn">
+     <div>
+     <a href="product/addProductView"   id="addProduct"  class="btn  btn-info btn-sm no-radius">
+     <i class="bigger-200"><img src="images/icon-addp.png" /></i>
+     <h5 class="margin-top lang" key="add_merchandise">添加商品</h5>
+     </a>
+     <a href="productTypeView"   id="productTypeView"  class="btn  btn-primary btn-sm no-radius">
+     <i class="bigger-200"><img src="images/icon-cpgl.png" /></i>
+     <h5 class="margin-top lang" key="product_classification">产品分类</h5>
+     </a>
+     <a href="adminInfoView"  title="个人信息" id="adminInfoView" class="btn  btn-success btn-sm no-radius">
+     <i class="bigger-200"><img src="images/icon-grxx.png" /></i>
+     <h5 class="margin-top lang" key="personal_info">个人信息</h5>
+     </a>
+     <!--<a href="#"  title="系统设置"  class="btn  btn-info btn-sm no-radius">-->
+     <!--<i class="bigger-200"><img src="images/xtsz.png" /></i>-->
+     <!--<h5 class="margin-top">系统设置</h5>-->
+     <!--</a>-->
+     <a href="orderManagementView" id="orderManagementView" title="商品订单" class="btn  btn-purple btn-sm no-radius">
+     <i class="bigger-200"><img src="images/icon-gwcc.png" /></i>
+     <h5 class="margin-top lang" key="merchandise_order">商品订单</h5>
+     </a>
+     <!--<a href="picture-add.html"  title="添加广告" class="btn  btn-pink btn-sm no-radius">-->
+     <!--<i class="bigger-200"><img src="images/icon-ad.png" /></i>-->
+     <!--<h5 class="margin-top">添加广告</h5>-->
+     <!--</a>-->
+      <!--<a href="article_add.html"  title="添加文章" class="btn  btn-info btn-sm no-radius">-->
+     <!--<i class="bigger-200"><img src="images/icon-addwz.png" /></i>-->
+     <!--<h5 class="margin-top">添加文章</h5>-->
+     <!--</a>-->
+     </div>
+  </div>
+ 
+ </div>
+   
+     </div>
+</body>
+</html>
+<script type="text/javascript">
+//面包屑返回值
+var index = parent.layer.getFrameIndex(window.name);
+parent.layer.iframeAuto(index);
+$('.no-radius').on('click', function(){
+	var cname = $(this).attr("title");
+	var chref = $(this).attr("href");
+	var cnames = parent.$('.Current_page').html();
+	var herf = parent.$("#iframe").attr("src");
+    parent.$('#parentIframe').html(cname);
+    parent.$('#iframe').attr("src",chref).ready();;
+	parent.$('#parentIframe').css("display","inline-block");
+	parent.$('.Current_page').attr({"name":herf,"href":"javascript:void(0)"}).css({"color":"#4c8fbd","cursor":"pointer"});
+	//parent.$('.Current_page').html("<a href='javascript:void(0)' name="+herf+" class='iframeurl'>" + cnames + "</a>");
+    parent.layer.close(index);
+	
+});
+$("#showLoginInfo span").last().text(common.getDataByKey("you_login_time")+ServiceUtil.currentTime())
+
+     $(document).ready(function(){
+		    Home.initHomeView();
+		  $(".t_Record").width($(window).width()-640);
+		  //当文档窗口发生改变时 触发  
+    $(window).resize(function(){
+		 $(".t_Record").width($(window).width()-640);
+		});
+ });
+	 
+	 
+ </script>   

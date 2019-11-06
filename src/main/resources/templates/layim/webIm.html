@@ -1,0 +1,86 @@
+@{
+Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>即时通讯</title>
+    <link rel="stylesheet" type="text/css" href="~/Scripts/plugins/layui.all/css/layui.css" />
+    <script type="text/javascript" src="~/Scripts/plugins/layui.all/layui.js"></script>
+</head>
+<body>
+<div id="id-div-layim-menu">
+    <!--右击好友列表内容空白区-->
+    <div id="id-easyui-menu-1" name="easyui-menu" style="width:150px;display:none;">
+        <div name="reload" iconcls="icon-reload">刷新好友列表</div>
+        <div>显示在线联系人</div>
+        <div name="editFriendGroup">分组管理器</div>
+    </div>
+    <!--右击好友列表内容好友分组项-->
+    <div id="id-easyui-menu-2" name="easyui-menu" style="width:150px;display:none;">
+        <div name="reload" iconcls="icon-reload">刷新好友列表</div>
+        <div name="showOnline">显示在线联系人</div>
+        <div class="menu-sep"></div>
+        <div name="editFriendGroup">分组管理器</div>
+        <div name="editFriend">好友管理器</div>
+    </div>
+    <!--右击好友列表人员-->
+    <div id="id-easyui-menu-3" name="easyui-menu" style="width:130px;display:none;">
+        <div>
+            <span>移动好友至</span>
+            <div style="width:130px;" name="easyui-menu-sub"></div>
+        </div>
+        <div name="removeFriend">删除好友</div>
+        <div name="editFriend">好友管理器</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    seajs.use("home/webIM.module");
+</script>
+
+
+<script type="text/html" id="id-layim-list-friend-group-template">
+    <li>
+        <h5 layim-event="spread" lay-type="false">
+            <i class="layui-icon"></i><span>新建分组</span>
+            <em>(<cite class="layim-count">0</cite>)</em>
+        </h5>
+    </li>
+</script>
+<script type="text/html" id="id-layim-list-friend-template">
+    <ul class="layui-unselect layim-tab-content layui-show layim-list-friend">
+        {{# for(var i=0;i<d.list.length;i++){ }}
+        <li>
+            <h5 layim-event="spread" lay-type="false">
+                <i class="layui-icon"></i><span>{{d.list[i].groupname}}</span>
+                <em>(<cite class="layim-count"> {{d.list[i].list.length}}</cite>)</em>
+            </h5>
+            <ul class="layui-layim-list ">
+                {{# for(var j=0;j<d.list[i].list.length;j++){ }}
+                {{# if (d.list[i].list[j].status=="online"){}}
+                <li layim-event="chat" data-type="friend" data-index="0" data-id="{{d.list[i].list[j].id}}" class="layim-friend{{d.list[i].list[j].id}}">
+                    <input type="hidden" value="{{d.list[i].list[j].id}}" />
+                    <img src="{{d.list[i].list[j].avatar}}">
+                    <span>{{d.list[i].list[j].username}}</span>
+                    <p>{{d.list[i].list[j].sign}}</p>
+                    <span class="layim-msg-status">new</span>
+                </li>
+                {{# }else {}}
+                <li layim-event="chat" data-type="friend" data-index="0" data-id="{{d.list[i].list[j].id}}" class="layim-friend{{d.list[i].list[j].id}} layim-list-gray">
+                    <img src="{{d.list[i].list[j].avatar}}">
+                    <span>{{d.list[i].list[j].username}}</span>
+                    <p>{{d.list[i].list[j].sign}}</p>
+                    <span class="layim-msg-status">new</span>
+                </li>
+                {{# } }}
+                {{# } }}
+            </ul>
+        </li>
+        {{# } }}
+    </ul>
+</script>
+</body>
+</html>
